@@ -1,0 +1,41 @@
+# Advanced EEG2TEXT Requirements
+# IMPORTANT: The model works WITHOUT these packages (uses automatic fallbacks)
+
+# NOTE: All packages below are OPTIONAL
+# The advanced model will automatically use fallback implementations if not installed:
+# - No Mamba → Uses Transformer encoder
+# - No torch-geometric → Uses cross-attention
+# - No sentence-transformers → Skips semantic loss
+
+# ============================================================================
+# OPTIONAL PACKAGES (uncomment to try installing, but model works without them)
+# ============================================================================
+
+# Mamba State Space Model (SKIP ON WINDOWS - requires CUDA + Linux)
+# mamba-ssm>=1.0.0
+
+# Graph Neural Networks (DIFFICULT ON WINDOWS - requires C++ compilation)
+# If you want to try, install manually with pre-built wheels:
+# pip install torch-geometric -f https://data.pyg.org/whl/torch-2.0.0+cpu.html
+# pip install torch-scatter -f https://data.pyg.org/whl/torch-2.0.0+cpu.html
+# pip install torch-sparse -f https://data.pyg.org/whl/torch-2.0.0+cpu.html
+
+# Semantic Analysis (OPTIONAL - works but model can skip it)
+# sentence-transformers>=2.2.0
+
+# ============================================================================
+# INSTALL ONLY THESE (safe for Windows CPU):
+# ============================================================================
+
+# Visualization (already in base requirements.txt, but listed here for reference)
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+# plotly>=5.14.0
+
+# Already in base requirements.txt:
+# torch>=2.0.0
+# transformers>=4.30.0
+# peft>=0.7.0
+# scipy>=1.10.0
+# numpy>=1.24.0
+# etc.
