@@ -25,7 +25,7 @@ class Config:
     if IS_KAGGLE:
         print("🔍 Detected Kaggle environment - using Kaggle paths")
         ZUCO_ROOT = Path('/kaggle/input/zuco-raw')
-        PROCESSED_DATA_DIR = Path('/kaggle/input/zuco-preprocessed')
+        PROCESSED_DATA_DIR = Path('/kaggle/input/zucopickle')
         OUTPUT_DIR = Path('/kaggle/working/outputs')
         MODEL_SAVE_DIR = Path('/kaggle/working/models')
         RESULTS_DIR = Path('/kaggle/working/results')
