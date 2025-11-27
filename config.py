@@ -77,7 +77,7 @@ class Config:
     LORA_TARGET_MODULES = ["q_proj", "v_proj"]  # Which BART layers to adapt
     
     # Training settings
-    DEVICE = torch.device('cpu')
+    DEVICE = torch.device('cuda')
     NUM_WORKERS = 0  # Set to 0 for CPU/Windows to avoid multiprocessing overhead
     SEED = 42
     GRADIENT_ACCUMULATION_STEPS = 8  # Simulate batch size of 8 with actual batch size of 1
