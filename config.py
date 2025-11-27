@@ -29,7 +29,8 @@ class Config:
     OUTPUT_DIR = Path('/kaggle/working/outputs')
     MODEL_SAVE_DIR = Path('/kaggle/working/models')
     RESULTS_DIR = Path('/kaggle/working/results')
-   ''' else:
+   ''' 
+   else:
         # Local paths (Windows/Mac/Linux)
         ZUCO_ROOT = Path('./zuco_data')  # Contains task1-SR, task2-NR, task3-TSR
         PROCESSED_DATA_DIR = Path('./processed_zuco')
