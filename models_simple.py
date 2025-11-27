@@ -249,7 +249,15 @@ class SimpleEEG2Text(nn.Module):
                 param.requires_grad = False
             print(f"  ✓ LLM frozen (only train encoder + projection)")
         
-        # 5. Optional: Apply LoRA to LLM
+        # 5. Reconstruction head for pre-training (encoder features -> EEG channels)
+        self.recon_head = nn.Sequential(
+            nn.Linear(encoder_dim, encoder_dim),
+            nn.GELU(),
+            nn.Linear(encoder_dim, num_eeg_channels)
+        )
+        print(f"  ✓ Reconstruction head: {encoder_dim}D → {num_eeg_channels}D")
+        
+        # 6. Optional: Apply LoRA to LLM
         if use_lora and not freeze_llm:
             try:
                 from peft import LoraConfig, get_peft_model
@@ -368,21 +376,30 @@ class SimpleEEG2Text(nn.Module):
         masked_eeg = eeg * mask
         
         # Encode masked EEG
-        features = self.eeg_encoder(masked_eeg)
+        features = self.eeg_encoder(masked_eeg)  # (B, T_down, D)
         
-        # Decode to reconstruct original (add decoder if needed)
-        # For now, simple reconstruction with linear layer
-        reconstructed = self.projection(features)
+        # Reconstruct using reconstruction head
+        reconstructed = self.recon_head(features)  # (B, T_down, C)
         
-        # Compute reconstruction loss (L1 + spectral)
+        # Upsample if temporal dimension was compressed
+        if reconstructed.size(1) != seq_len:
+            # Interpolate: (B, C, T_down) -> (B, C, T) -> (B, T, C)
+            reconstructed = F.interpolate(
+                reconstructed.permute(0, 2, 1),
+                size=seq_len,
+                mode='linear',
+                align_corners=False
+            ).permute(0, 2, 1)
+        
+        # Compute reconstruction loss (L1 in time domain)
         time_loss = F.l1_loss(reconstructed, eeg)
         
         # Optional: Spectral loss (frequency domain)
-        # eeg_fft = torch.fft.rfft(eeg, dim=1)
-        # recon_fft = torch.fft.rfft(reconstructed, dim=1)
-        # freq_loss = F.l1_loss(eeg_fft.abs(), recon_fft.abs())
+        eeg_fft = torch.fft.rfft(eeg, dim=1)
+        recon_fft = torch.fft.rfft(reconstructed, dim=1)
+        freq_loss = F.l1_loss(eeg_fft.abs(), recon_fft.abs())
         
-        return time_loss  # + freq_loss
+        return time_loss + 0.1 * freq_loss
 
 
 def count_parameters(model):

@@ -1,6 +1,8 @@
 torch>=2.0.0
 transformers>=4.30.0
 peft>=0.7.0  # For LoRA fine-tuning
+accelerate>=0.20.0  # For distributed training and model handling
+datasets>=2.14.0  # For data processing
 scipy>=1.10.0
 numpy>=1.24.0
 pandas>=2.0.0
