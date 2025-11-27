@@ -22,20 +22,20 @@ class Config:
     IS_KAGGLE = os.path.exists('/kaggle/input')
     
     # Data paths - Automatically adapts to Kaggle or Local
-    if IS_KAGGLE:
-        print("🔍 Detected Kaggle environment - using Kaggle paths")
-        ZUCO_ROOT = Path('/kaggle/input/zuco-raw')
-        PROCESSED_DATA_DIR = Path('/kaggle/input/zucopickle')
-        OUTPUT_DIR = Path('/kaggle/working/outputs')
-        MODEL_SAVE_DIR = Path('/kaggle/working/models')
-        RESULTS_DIR = Path('/kaggle/working/results')
-    else:
+    #if IS_KAGGLE:
+    print("🔍 Detected Kaggle environment - using Kaggle paths")
+    ZUCO_ROOT = Path('/kaggle/input/zuco-raw')
+    PROCESSED_DATA_DIR = Path('/kaggle/input/zucopickle')
+    OUTPUT_DIR = Path('/kaggle/working/outputs')
+    MODEL_SAVE_DIR = Path('/kaggle/working/models')
+    RESULTS_DIR = Path('/kaggle/working/results')
+   ''' else:
         # Local paths (Windows/Mac/Linux)
         ZUCO_ROOT = Path('./zuco_data')  # Contains task1-SR, task2-NR, task3-TSR
         PROCESSED_DATA_DIR = Path('./processed_zuco')
         OUTPUT_DIR = Path('./outputs')
         MODEL_SAVE_DIR = Path('./models')
-        RESULTS_DIR = Path('./results')
+        RESULTS_DIR = Path('./results')'''
     
     # Create directories
     for dir_path in [PROCESSED_DATA_DIR, OUTPUT_DIR, MODEL_SAVE_DIR, RESULTS_DIR]:
