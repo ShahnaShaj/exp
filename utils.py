@@ -68,6 +68,10 @@ def get_lr(optimizer):
     for param_group in optimizer.param_groups:
         return param_group['lr']
 
+def get_last_lr(self):
+    """Return current learning rate(s) - compatible with PyTorch schedulers"""
+    return [self.get_lr()]
+
 
 class WarmupLinearSchedule:
     """Learning rate scheduler with linear warmup and linear decay"""
